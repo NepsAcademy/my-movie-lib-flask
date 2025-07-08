@@ -1,6 +1,6 @@
 # My Movie Library (Dynamic Version) 🎬
 
-Welcome to the dynamic version of **My Movie Library**\! This is the official example project for the [**Web Development with Python and Flask Course at Neps Academy**](https://neps.academy).
+Welcome to the dynamic version of **My Movie Library**\! This is the official example project for the [**Web Development with Python and Flask Course at Neps Academy**]([https://neps.academy](https://neps.academy/br/course/3093)).
 
 The goal of this project is to evolve a static HTML/CSS website into a fully functional dynamic web application. We use Python and the Flask microframework to handle backend logic, render templates dynamically, process forms, and persist data in a `.csv` file.
 
