@@ -1,8 +1,18 @@
 import csv
+import os
 from flask import Flask, render_template, request, redirect, url_for
+from werkzeug.utils import secure_filename
 from datetime import datetime
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = "static/uploads"
+ALLOWED_EXTENSIONS = {"png", "jpeg"}
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.get("/")
@@ -46,7 +56,6 @@ def show_add_form():
 @app.post("/add-review")
 def add_review():
 
-    # 1. Busca o último ID adicionado (código que vimos acima)
     with open("movies.csv", mode="r", encoding="utf-8") as csv_file:
         reader = list(csv.reader(csv_file))
         last_id = 0
@@ -58,17 +67,37 @@ def add_review():
 
         next_id = last_id + 1
 
-    # 2. Converte a data para o formato esperado
     watched_date_raw = request.form.get("watched_date")
     date_object = datetime.strptime(watched_date_raw, "%Y-%m-%d")
 
     formatted_date = date_object.strftime("%m/%d/%Y")
 
-    # 3. Coleta os dados do formulário usando o atributo 'name' de cada campo
+    poster_file = request.files.get("poster")
+
+    # Variável para guardar o caminho do arquivo
+    poster_path = None
+
+    # 2. Valida e Salva o Arquivo
+    if poster_file and allowed_file(poster_file.filename):
+
+        # 3. Garante um nome de arquivo seguro
+        original_filename = secure_filename(poster_file.filename)
+
+        # Cria um nome único para evitar sobreposição de arquivos
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        unique_filename = f"{timestamp}_{original_filename}"
+
+        # 4. Salva o arquivo na pasta de uploads
+        filepath = os.path.join(app.config["UPLOAD_FOLDER"], unique_filename)
+        poster_file.save(filepath)
+
+        # 5. Guardamos o caminho relativo para salvar no CSV
+        poster_path = f"uploads/{unique_filename}"
+
     new_movie_data = [
         next_id,
         request.form.get("title"),
-        request.form.get("poster_url"),
+        poster_path,
         request.form.get("rating"),
         formatted_date,
         request.form.get("review"),

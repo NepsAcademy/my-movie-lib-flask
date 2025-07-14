@@ -160,7 +160,7 @@ footer {
   flex-direction: column;
 }
 
-.form-group label {
+.form-label {
   font-size: 24px;
   margin-bottom: 6px;
 }
@@ -176,6 +176,18 @@ footer {
   font-size: 14px;
   color: #333;
   font-family: inherit;
+}
+
+.custom-file-label {
+  display: inline-block;
+  padding: 12px;
+  border: 1px solid #e8eaed;
+  border-radius: 12px;
+  background-color: #fff;
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+  color: #333;
 }
 
 .form-row {

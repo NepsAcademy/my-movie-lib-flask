@@ -9,7 +9,7 @@
     </div>
     <div class="movie-details-body">
         <div class="movie-poster">
-            <img src="{{ movie.image_url }}" alt="Poster for {{ movie.title }}" />
+            <img src="{{ url_for('static', filename=movie.poster_path) }}" alt="Poster for {{ movie.title }}" />
         </div>
         <div class="movie-details-info">
             <h1 class="movie-title">{{ movie.title }}</h1>
